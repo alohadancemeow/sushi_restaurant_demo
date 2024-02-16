@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sushi_restaurant_demo/components/button.dart';
 import 'package:sushi_restaurant_demo/components/food_tile.dart';
-import 'package:sushi_restaurant_demo/models/food.dart';
+import 'package:sushi_restaurant_demo/models/shop.dart';
 import 'package:sushi_restaurant_demo/pages/food_details.dart';
 import 'package:sushi_restaurant_demo/theme/color.dart';
 
@@ -14,23 +15,11 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  // food menu
-  List foodMenu = [
-    Food(
-      name: 'Salmon Sushi',
-      price: '21.25',
-      imagePath: 'lib/images/sushi2.png',
-      rating: '4.9',
-    ),
-    Food(
-      name: 'Tuna Sushi',
-      price: '23.5',
-      imagePath: 'lib/images/sushi3.png',
-      rating: '3.9',
-    ),
-  ];
-
   void navigateToFoodDetails(int index) {
+    // get the shop and it's menu
+    final shop = context.read<Shop>();
+    final foodMenu = shop.foodMenu;
+
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -40,21 +29,31 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
+    // get the shop and it's menu
+    final shop = context.read<Shop>();
+    final foodMenu = shop.foodMenu;
+
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        foregroundColor: Colors.grey[800],
         elevation: 0,
-        leading: Icon(
+        leading: const Icon(
           Icons.menu,
-          color: Colors.grey[900],
         ),
-        title: Text(
+        title: const Text(
           'Tokyo',
-          style: TextStyle(
-            color: Colors.grey[900],
-          ),
+          style: TextStyle(),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/cartpage');
+            },
+            icon: const Icon(Icons.shopping_cart),
+          )
+        ],
       ),
       body: Column(
         children: [
